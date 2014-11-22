@@ -1,9 +1,10 @@
 <ion-view title="Areas" hide-nav-bar="true">
-  len = {{len}}
   <div class="row" ng-repeat="areas_row in areas_rows">
     <div class="col" ng-repeat="area in areas_row">
-      <img class="full-image" src="{{area.logo}}">
-      <p align="center">{{area.name}}</p>
+      <a href="#/tab/area/{{area.id}}/stations">
+        <img class="full-image" src="{{area.logo}}">
+        <p align="center">{{area.name}}</p>
+      </a>
     </div>
   </div>
 </ion-view>

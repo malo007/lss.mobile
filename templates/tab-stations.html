@@ -1,0 +1,10 @@
+<ion-view title="Stations" hide-nav-bar="true">
+  <div class="row" ng-repeat="stations_row in stations_rows">
+    <div class="col" ng-repeat="stations in stations_row">
+      <a ng-click="changeToStation({{stations.id}})">
+        <img class="full-image" src="{{stations.logo}}">
+        <p align="center">{{stations.name}}</p>
+      </a>
+    </div>
+  </div>
+</ion-view>

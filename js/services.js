@@ -1,7 +1,7 @@
 angular.module('starter.services', [])
 
 /**
- * A simple example service that returns some data.
+ * Areas service
  */
 .factory('Areas', function() {
   var areas = [
@@ -26,6 +26,33 @@ angular.module('starter.services', [])
   return {
     all: function() {
       return areas;
+    }
+  }
+})
+
+/**
+ * Stations service
+ */
+.factory('Stations', function() {
+  var stations = [
+   {"id":100016,"name":"大利嘉城","logo":"http://img.159song.com/picture/station/dlj.png"},
+   {"id":100022,"name":"中融商务公馆","logo":"http://img.159song.com/picture/station/zlswgg.png"},
+   {"id":100017,"name":"汇福花园","logo":"http://img.159song.com/picture/station/hfhy.png"},
+   {"id":100018,"name":"金钻世家/抽纱大厦/阿波罗","logo":"http://img.159song.com/picture/station/jzsj.png"},
+   {"id":100019,"name":"源利明珠","logo":"http://img.159song.com/picture/station/ylmz.png"},
+   {"id":100020,"name":"华能大厦","logo":"http://img.159song.com/picture/station/hnds.png"},
+   {"id":100021,"name":"五一公馆","logo":"http://img.159song.com/picture/station/hy.png"},
+   {"id":100023,"name":"联信大厦","logo":"http://img.159song.com/picture/station/lxds.png"},
+   {"id":100024,"name":"天丰电子城","logo":"http://img.159song.com/picture/station/tfdzc.png"},
+   {"id":100025,"name":"中选路广告城","logo":"http://img.159song.com/picture/station/jy.png"},
+   {"id":100026,"name":"茂泰世纪大厦","logo":"http://img.159song.com/picture/station/mtds.png"},
+  ];
+  return {
+    getStationsByAreaid: function(areaId) {
+      return stations;
+    },
+    getStationById: function(stationId) {
+      return {"name":"中融商务公馆","logo":"http://img.159song.com/picture/station/zlswgg.png"};
     }
   }
 })

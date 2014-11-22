@@ -57,6 +57,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    .state('tab.stations', {
+      url: '/area/:areaId/stations',
+      views: {
+        'tab-dash': {
+          templateUrl: 'templates/tab-stations.html',
+          controller: 'StationsCtrl'
+        }
+      }
+    })
 
     .state('tab.friends', {
       url: '/friends',
