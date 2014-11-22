@@ -1,5 +1,19 @@
-<ion-view title="Dashboard">
-  <ion-content class="padding">
-    <h1>Dash</h1>
-  </ion-content>
+<ion-view title="Dashboard" hide-nav-bar="true">
+  <div class="row">
+    <div class="col">one row logo</div>
+    <div class="col"><a href="#/tab/areas">切换商圈</a></div>
+  </div>
+
+  <div class="row">
+    <div class="col" ng-repeat="area in areas_row1">
+      <img class="full-image" src="{{area.logo}}">
+      <p align="center">{{area.name}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" ng-repeat="area in areas_row2">
+      <img class="full-image" src="{{area.logo}}">
+      <p align="center">{{area.name}}</p>
+    </div>
+  </div>
 </ion-view>

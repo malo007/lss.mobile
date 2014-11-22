@@ -48,6 +48,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+    .state('tab.areas', {
+      url: '/areas',
+      views: {
+        'tab-dash': {
+          templateUrl: 'templates/tab-areas.html',
+          controller: 'AreasCtrl'
+        }
+      }
+    })
+
     .state('tab.friends', {
       url: '/friends',
       views: {
