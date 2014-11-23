@@ -1,4 +1,5 @@
 <ion-view title="Areas" hide-nav-bar="true">
+ <ion-content>
   <div class="row" ng-repeat="areas_row in areas_rows">
     <div class="col" ng-repeat="area in areas_row">
       <a href="#/tab/area/{{area.id}}/stations">
@@ -7,4 +8,5 @@
       </a>
     </div>
   </div>
+ </ion-content>
 </ion-view>

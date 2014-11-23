@@ -13,7 +13,7 @@ angular.module('starter.controllers', [])
 .controller('AreasCtrl', function($scope, Areas) {
   $scope.areas_rows = [];
   var areas = Areas.all();
-  var i, elements_per_row = 8, 
+  var i, elements_per_row = 4, 
    full_row_count = parseInt(areas.length/elements_per_row), 
    last_elem_number = areas.length%elements_per_row;
   for (i=0; i < full_row_count; i++) {
@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
   $scope.area_id = $stateParams.areaId;
   $scope.stations_rows = [];
   var stations = Stations.getStationsByAreaid($scope.area_id);
-  var i, elements_per_row = 8, 
+  var i, elements_per_row = 4, 
    full_row_count = parseInt(stations.length/elements_per_row), 
    last_elem_number = stations.length%elements_per_row;
   for (i=0; i < full_row_count; i++) {
