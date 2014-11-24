@@ -51,11 +51,11 @@ angular.module('starter.controllers', [])
   $scope.changeToStation = function(stationId) {
     $rootScope.area = {"id": $scope.area_id};
     $rootScope.station = {"id": stationId};
-	var station = Stations.getStationById(stationId);
-	for (var attr in station) {
+    var station = Stations.getStationById(stationId);
+    for (var attr in station) {
       $rootScope.station[attr] = station[attr];
-	}
-	$location.path("#/tab/dash");
+    }
+    $location.path("#/tab/dash");
   };
 })
 
@@ -67,5 +67,19 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope, $localstorage) {
+  var settins = {};
+  try {
+    settins = $localstorage.getObject('settins');
+  } catch(e) {
+  }
+  if (!settins) {
+    settins = [
+      {"text":"HTML5", "checked":true},
+      {"text":"Javascript", "checked":false},
+      {"text":"CSS3", "checked":true},
+      {"text":"XHTML", "checked":false},
+    ];
+  }
+  $scope.settings = settins;
 });

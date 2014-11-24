@@ -1,5 +1,13 @@
 <ion-view title="Account">
   <ion-content class="padding">
-    <h1>Account</h1>
+    <ul class="list">
+      <li class="item item-toggle">
+        <ion-toggle ng-repeat="item in settings"
+                    ng-model="item.checked" 
+                    ng-checked="item.checked">
+          {{ item.text }}
+        </ion-toggle>
+      </li>
+    </ul>
   </ion-content>
 </ion-view>
