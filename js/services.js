@@ -58,6 +58,43 @@ angular.module('starter.services', [])
 })
 
 /**
+ * Settings service
+ */
+.constant('DEFAULT_SETTINGS', {
+  "HTML5":true,
+  "Javascript":false,
+  "CSS3":true,
+  "XHTML":false,
+})
+.factory('Settings', function($rootScope, $localstorage, DEFAULT_SETTINGS) {
+  var _settings = $localstorage.getObject('settins');
+  _settings = angular.extend({}, DEFAULT_SETTINGS, _settings);
+  
+  var obj = {
+    getSettings: function() {
+      return _settings;
+    },
+    // Save the settings to localStorage
+    save: function() {
+      $localstorage.setObject('settins', _settings);
+      $rootScope.$broadcast('settings.changed', _settings);
+    },
+    // Get a settings value
+    get: function(k) {
+      return _settings[k];
+    },
+    // Set a settings value
+    set: function(k, v) {
+      _settings[k] = v;
+      this.save();
+    }
+  }
+  // Save the settings to be safe
+  obj.save();
+  return obj;
+})
+
+/**
  * A simple example service that returns some data.
  */
 .factory('Friends', function() {

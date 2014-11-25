@@ -67,19 +67,11 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('AccountCtrl', function($scope, $localstorage) {
-  var settins = {};
-  try {
-    settins = $localstorage.getObject('settins');
-  } catch(e) {
+.controller('AccountCtrl', function($scope, Settings) {
+  var settins = Settings.getSettings();
+  var settins_list = [];
+  for (setting in settins) {
+   settins_list.push({"text":setting, "checked":settins[setting]})
   }
-  if (!settins) {
-    settins = [
-      {"text":"HTML5", "checked":true},
-      {"text":"Javascript", "checked":false},
-      {"text":"CSS3", "checked":true},
-      {"text":"XHTML", "checked":false},
-    ];
-  }
-  $scope.settings = settins;
+  $scope.settings = settins_list;
 });
