@@ -1,19 +1,17 @@
-<ion-view title="Account">
+<ion-view title="Settings" hide-tabs>
   <ion-nav-bar>
     <ion-nav-back-button>
       Back
     </ion-nav-back-button>
-    <div class="buttons right-buttons">
-      <button class="button">
-        Right Button
-      </button>
-    </div>
   </ion-nav-bar>
   <ion-content class="padding">
-  <a href="#/tab/settings">settings</a>
     <ul class="list">
       <li class="item item-toggle">
-        <a href="#/tab/settings">settings</a>
+        <ion-toggle ng-repeat="item in settings"
+                    ng-model="item.checked" 
+                    ng-checked="item.checked">
+          {{ item.text }}
+        </ion-toggle>
       </li>
     </ul>
   </ion-content>

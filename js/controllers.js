@@ -67,7 +67,10 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('AccountCtrl', function($scope, Settings) {
+.controller('AccountCtrl', function($scope) {
+})
+
+.controller('SettingsCtrl', function($scope, Settings) {
   var settins = Settings.getSettings();
   var settins_list = [];
   for (setting in settins) {
