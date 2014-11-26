@@ -70,11 +70,21 @@ angular.module('starter.controllers', [])
 .controller('AccountCtrl', function($scope) {
 })
 
-.controller('SettingsCtrl', function($scope, Settings) {
+.controller('SettingsCtrl', function($scope, $rootScope, Settings) {
+  //console.log('SettingsCtrl enter');//
   var settins = Settings.getSettings();
   var settins_list = [];
   for (setting in settins) {
-   settins_list.push({"text":setting, "checked":settins[setting]})
+   settins[setting] = !settins[setting];
+   settins_list.push({"text":setting, "checked":settins[setting]});
   }
   $scope.settings = settins_list;
+  
+  $rootScope.$emit('app.tabshide', '');
+  //
+  $scope.$on('$destroy', function() {
+    Settings.save();
+    $rootScope.$emit('app.tabsshow', '');
+    //console.log('SettingsCtrl exit');//
+  });
 });
