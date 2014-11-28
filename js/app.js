@@ -93,6 +93,18 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
           templateUrl: 'templates/tab-account.html',
           controller: 'AccountCtrl'
         }
+      },
+      resolve: {
+        //console.log('tab.account resolve');
+      }
+    })
+    .state('tab.login', {
+      url: '/login',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-login.html',
+          controller: 'LoginCtrl'
+        }
       }
     })
     .state('tab.settings', {

@@ -5,12 +5,28 @@
   <ion-content class="padding">
     <ul class="list">
       <li class="item item-toggle">
-        <ion-toggle ng-repeat="item in settings"
-                    ng-model="item.checked" 
-                    ng-checked="item.checked">
-          {{ item.text }}
+        <ion-toggle ng-model="settings.HTML5" 
+                    ng-checked="settings.HTML5">
+          HTML5
+        </ion-toggle>
+        <ion-toggle ng-model="settings.Javascript" 
+                    ng-checked="settings.Javascript">
+          Javascript
+        </ion-toggle>
+        <ion-toggle ng-model="settings.CSS3" 
+                    ng-checked="settings.CSS3">
+          CSS3
+        </ion-toggle>
+        <ion-toggle ng-model="settings.XHTML" 
+                    ng-checked="settings.XHTML">
+          XHTML
         </ion-toggle>
       </li>
     </ul>
+    <div class="list">
+      <div class="item">
+        <button class="button button-block button-positive" ng-click="doLogout()">Log out</button>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

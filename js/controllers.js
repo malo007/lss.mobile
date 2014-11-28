@@ -67,24 +67,50 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope, $state, Settings) {
+  var username = Settings.get('username');
+  if (username === undefined || username === '') {
+   $state.go('tab.login');
+   return;
+  }
+  //
+  $scope.username = username;
+  $scope.type = typeof(username);
 })
 
-.controller('SettingsCtrl', function($scope, $rootScope, Settings) {
+.controller('LoginCtrl', function($scope, $state, Settings) {
+  $scope.loginData = {};
+  // do login
+  $scope.doLogin = function(loginData) {
+    Settings.set('username', loginData.username);
+    Settings.save();
+    //$location.path("#/tab/account");
+    $state.go('tab.account');
+  };
+})
+
+.controller('SettingsCtrl', function($scope, $rootScope, $state, Settings) {
   //console.log('SettingsCtrl enter');//
   var settins = Settings.getSettings();
-  var settins_list = [];
-  for (setting in settins) {
-   settins[setting] = !settins[setting];
-   settins_list.push({"text":setting, "checked":settins[setting]});
-  }
-  $scope.settings = settins_list;
+  //var settins_list = [];
+  //for (setting in settins) {
+  // settins[setting] = !settins[setting];
+  // settins_list.push({"text":setting, "checked":settins[setting]});
+  //}
+  $scope.settings = settins;
   
   $rootScope.$emit('app.tabshide', '');
-  //
+  // on destroy
   $scope.$on('$destroy', function() {
     Settings.save();
     $rootScope.$emit('app.tabsshow', '');
     //console.log('SettingsCtrl exit');//
   });
+  // do logout
+  $scope.doLogout = function() {
+    Settings.set('username', '');
+    Settings.save();
+    //$location.path("#/tab/dash");
+    $state.go('tab.dash');
+  };
 });
