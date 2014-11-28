@@ -96,21 +96,32 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
       },
       resolve: {
         //console.log('tab.account resolve');
+      },
+      onEnter: function($state, Settings){
+        var username = Settings.get('username');
+        if (username === undefined || username === '') {
+         $state.go('tab.login', {data:{from:'tab.account'}});
+        }
       }
     })
+
+    // other(hidden) tab
     .state('tab.login', {
       url: '/login',
       views: {
-        'tab-account': {
+        'tab-hidden': {
           templateUrl: 'templates/tab-login.html',
           controller: 'LoginCtrl'
         }
+      },
+      data: {
+        from: 'tab.account'
       }
     })
     .state('tab.settings', {
       url: '/settings',
       views: {
-        'tab-account': {
+        'tab-hidden': {
           templateUrl: 'templates/tab-settings.html',
           controller: 'SettingsCtrl'
         }
@@ -121,4 +132,3 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
   $urlRouterProvider.otherwise('/tab/dash');
 
 });
-

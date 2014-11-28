@@ -67,15 +67,9 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('AccountCtrl', function($scope, $state, Settings) {
-  var username = Settings.get('username');
-  if (username === undefined || username === '') {
-   $state.go('tab.login');
-   return;
-  }
-  //
-  $scope.username = username;
-  $scope.type = typeof(username);
+.controller('AccountCtrl', function($scope, Settings) {
+  $scope.username = Settings.get('username');
+  $scope.type = typeof($scope.username);
 })
 
 .controller('LoginCtrl', function($scope, $state, Settings) {
@@ -84,8 +78,8 @@ angular.module('starter.controllers', [])
   $scope.doLogin = function(loginData) {
     Settings.set('username', loginData.username);
     Settings.save();
-    //$location.path("#/tab/account");
-    $state.go('tab.account');
+    // redirect
+    $state.go($state.current.data.from);
   };
 })
 

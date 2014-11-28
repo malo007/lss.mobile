@@ -1,10 +1,12 @@
 <ion-view title="Settings">
-  <ion-nav-back-button class="button-icon icon  ion-ios7-arrow-back">
-    Back
-  </ion-nav-back-button>
+  <ion-nav-buttons side="left">
+    <button class="button button-icon" ng-click="doSomething()">
+      <i class="ion-arrow-left-c"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content class="padding">
-    <ul class="list">
-      <li class="item item-toggle">
+    <ion-list>
+      <ion-item>
         <ion-toggle ng-model="settings.HTML5" 
                     ng-checked="settings.HTML5">
           HTML5
@@ -21,12 +23,10 @@
                     ng-checked="settings.XHTML">
           XHTML
         </ion-toggle>
-      </li>
-    </ul>
-    <div class="list">
-      <div class="item">
+      </ion-item>
+      <ion-item>
         <button class="button button-block button-positive" ng-click="doLogout()">Log out</button>
-      </div>
-    </div>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>
