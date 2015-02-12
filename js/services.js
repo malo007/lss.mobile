@@ -95,6 +95,26 @@ angular.module('starter.services', [])
 })
 
 /**
+ * Im service
+ */
+.factory('Im', function($im) {
+  return {
+    login: function() {
+      $im.connect("ws://61.131.37.30:3000/");
+      $im.recvmsg(function(topic, message) {
+        alert([topic, message].join(": "));
+      });
+    },
+    sendmsg: function(message) {
+      $im.sendmsg("mqtt/demo", message);
+    },
+    logout: function() {
+      $im.disconnect();
+    }
+  }
+})
+
+/**
  * A simple example service that returns some data.
  */
 .factory('Friends', function() {
