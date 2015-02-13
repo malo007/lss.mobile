@@ -83,7 +83,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('SettingsCtrl', function($scope, $rootScope, $state, Settings) {
+.controller('SettingsCtrl', function($scope, $rootScope, $state, $ionicNavBarDelegate, Settings) {
   //console.log('SettingsCtrl enter');//
   var settins = Settings.getSettings();
   //var settins_list = [];
@@ -100,11 +100,37 @@ angular.module('starter.controllers', [])
     $rootScope.$emit('app.tabsshow', '');
     //console.log('SettingsCtrl exit');//
   });
+  // go back
+  $scope.goBack = function() {
+    $ionicNavBarDelegate.back();
+  };
   // do logout
   $scope.doLogout = function() {
     Settings.set('username', '');
     Settings.save();
     //$location.path("#/tab/dash");
     $state.go('tab.dash');
+  };
+})
+
+.controller('ChatCtrl', function($scope, $rootScope, $ionicNavBarDelegate, Im) {
+  $scope.messages = [{'text':'Hello'}, {'text':', world!'}];
+  Im.login();
+  Im.recvmsg(function(topic, message) {
+    $scope.messages.push({'text':[topic, message].join(": ")});
+  });
+  $rootScope.$emit('app.tabshide', '');
+  // on destroy
+  $scope.$on('$destroy', function() {
+    Im.logout();
+    $rootScope.$emit('app.tabsshow', '');
+  });
+  // go back
+  $scope.goBack = function() {
+    $ionicNavBarDelegate.back();
+  };
+  // send chat message
+  $scope.sendChatMsg = function(chatmsg) {
+    Im.sendmsg(chatmsg);
   };
 });

@@ -126,6 +126,15 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
           controller: 'SettingsCtrl'
         }
       }
+    })
+    .state('tab.chat', {
+      url: '/chat',
+      views: {
+        'tab-hidden': {
+          templateUrl: 'templates/tab-chat.html',
+          controller: 'ChatCtrl'
+        }
+      }
     });
 
   // if none of the above states are matched, use this as the fallback

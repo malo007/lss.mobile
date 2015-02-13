@@ -1,0 +1,30 @@
+<ion-view title="Chat">
+  <ion-nav-buttons side="primary">
+    <button class="button button-icon" ng-click="goBack()">
+      <i class="ion-arrow-left-c"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="padding">
+    <div class="list">
+    
+      <div class="item">
+        <div ng-repeat="message in messages"
+         ng-class="{other: message.userId != myId}"
+         class="messages">
+          <div class="message" ng-class="{'slide-right': showTime, '': !showTime}">
+            <span>{{ message.text }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <input type="text" ng-model="chatmsg" placeholder="说点什么..">
+        </label>
+        <button class="button button-small" ng-click="sendChatMsg(chatmsg)">
+          发送
+        </button>
+      </div>
+    
+    </div>
+  </ion-content>
+</ion-view>

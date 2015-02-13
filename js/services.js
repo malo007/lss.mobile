@@ -101,9 +101,9 @@ angular.module('starter.services', [])
   return {
     login: function() {
       $im.connect("ws://61.131.37.30:3000/");
-      $im.recvmsg(function(topic, message) {
-        alert([topic, message].join(": "));
-      });
+    },
+    recvmsg: function(callback) {
+      $im.recvmsg(callback);
     },
     sendmsg: function(message) {
       $im.sendmsg("mqtt/demo", message);
