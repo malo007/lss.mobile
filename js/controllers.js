@@ -113,15 +113,20 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ChatCtrl', function($scope, $rootScope, $ionicNavBarDelegate, Im) {
-  $scope.messages = [{'text':'Hello'}, {'text':', world!'}];
+.controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicNavBarDelegate, Im) {
+  $scope.myUid = 153153;
+  $scope.chatmsg = '';
+  $scope.messages = [{'uid':0,'text':'Hello'}, {'uid':0,'text':', world!'}];
   Im.login();
   Im.recvmsg(function(topic, message) {
-    $scope.messages.push({'text':[topic, message].join(": ")});
+    $scope.messages.push({'uid':0, 'text':[topic, message].join(": ")});
+    $ionicScrollDelegate.scrollBottom(true);
   });
   $rootScope.$emit('app.tabshide', '');
+  //console.log('scope init');
   // on destroy
   $scope.$on('$destroy', function() {
+    //console.log('scope destroy');
     Im.logout();
     $rootScope.$emit('app.tabsshow', '');
   });
@@ -132,5 +137,8 @@ angular.module('starter.controllers', [])
   // send chat message
   $scope.sendChatMsg = function(chatmsg) {
     Im.sendmsg(chatmsg);
+    $scope.messages.push({'uid':$scope.myUid, 'text':chatmsg});
+    $scope.chatmsg = '';
+    $ionicScrollDelegate.scrollBottom(true);
   };
 });
