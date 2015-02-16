@@ -113,11 +113,11 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicNavBarDelegate, Im) {
+.controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicNavBarDelegate, Settings, Im) {
   $scope.myUid = 153153;
   $scope.chatmsg = '';
   $scope.messages = [{'uid':0,'text':'Hello'}, {'uid':0,'text':', world!'}];
-  Im.login();
+  Im.login(Settings.get('username'), 'fixsecret');
   Im.recvmsg(function(topic, message) {
     $scope.messages.push({'uid':0, 'text':[topic, message].join(": ")});
     $ionicScrollDelegate.scrollBottom(true);
@@ -136,7 +136,7 @@ angular.module('starter.controllers', [])
   };
   // send chat message
   $scope.sendChatMsg = function(chatmsg) {
-    Im.sendmsg(chatmsg);
+    Im.sendmsg('153153', chatmsg);
     $scope.messages.push({'uid':$scope.myUid, 'text':chatmsg});
     $scope.chatmsg = '';
     $ionicScrollDelegate.scrollBottom(true);

@@ -99,14 +99,14 @@ angular.module('starter.services', [])
  */
 .factory('Im', function($im) {
   return {
-    login: function() {
-      $im.connect("ws://61.131.37.30:3000/");
+    login: function(user, credential) {
+      $im.connect("ws://61.131.37.30:3000/", user, credential);
     },
     recvmsg: function(callback) {
       $im.recvmsg(callback);
     },
-    sendmsg: function(message) {
-      $im.sendmsg("mqtt/demo", message);
+    sendmsg: function(target, message) {
+      $im.sendusermsg(target, message);
     },
     logout: function() {
       $im.disconnect();

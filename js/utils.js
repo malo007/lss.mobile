@@ -20,14 +20,21 @@ angular.module('ionic.utils', [])
 .factory('$im', [function() {
   return {
     client: undefined,
-    connect: function(ws_server) {
-      client = mqtt.connect(ws_server);
+    self_user: '',
+    connect: function(server, imuser, imcred) {
+      self_user = imuser;
+      client = mqtt.connect(server, {auth:imuser+':'+imcred});
     },
-    sendmsg: function(target, message) {
-      client.publish(target, message);
+    sendusermsg: function(target_user, message) {
+      if (self_user<target_user) {
+        topic = "convs/p|"+self_user+"|"+target_user;
+      } else {
+        topic = "convs/p|"+self_user+"|"+self_user;
+      }
+      client.publish(topic, message);
     },
     recvmsg: function(callback) {
-      client.subscribe("mqtt/demo");
+      client.subscribe("users/"+self_user+"/msgs");
       client.on("message", callback);
     },
     disconnect: function() {
