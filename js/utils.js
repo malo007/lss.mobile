@@ -34,6 +34,7 @@ angular.module('ionic.utils', [])
       client.publish(topic, message);
     },
     recvmsg: function(callback) {
+      client.publish("users/"+self_user+"/status", "online");
       client.subscribe("users/"+self_user+"/msgs");
       client.on("message", callback);
     },
