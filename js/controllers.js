@@ -118,8 +118,8 @@ angular.module('starter.controllers', [])
   $scope.chatmsg = '';
   $scope.messages = [{'uid':0,'text':'Hello'}, {'uid':0,'text':', world!'}];
   Im.login(Settings.get('username'), 'fixsecret');
-  Im.recvmsg(function(topic, message) {
-    $scope.messages.push({'uid':0, 'text':[topic, message].join(": ")});
+  Im.recvmsg(function(topic, message, messageId) {
+    $scope.messages.push({'uid':0, 'text':[topic, messageId, message].join(": ")});
     $ionicScrollDelegate.scrollBottom(true);
   });
   $rootScope.$emit('app.tabshide', '');

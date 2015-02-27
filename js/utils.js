@@ -18,9 +18,12 @@ angular.module('ionic.utils', [])
 }])
 
 .factory('$im', [function() {
+  var client;
+  var self_user = '';
+  var ProtoBuf = dcodeIO.ProtoBuf;
+  var Im = ProtoBuf.loadProtoFile("lib/protobuf/message.proto").build("Im");
+  
   return {
-    client: undefined,
-    self_user: '',
     connect: function(server, imuser, imcred) {
       self_user = imuser;
       client = mqtt.connect(server, {auth:imuser+':'+imcred});
@@ -31,12 +34,17 @@ angular.module('ionic.utils', [])
       } else {
         topic = "convs/p|"+self_user+"|"+self_user;
       }
-      client.publish(topic, message);
+      var msg = new Im.Message(123, 'text', message);
+      client.publish(topic, msg.toArrayBuffer());
+      //client.publish(topic, message);
     },
     recvmsg: function(callback) {
       client.publish("users/"+self_user+"/status", "online");
       client.subscribe("users/"+self_user+"/msgs");
-      client.on("message", callback);
+      client.on("message", function(topic, message, packet) {
+         var msg = Im.Message.decode(message);
+         callback(topic, msg.content, msg.id);
+      });
     },
     disconnect: function() {
       client.end();
