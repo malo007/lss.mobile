@@ -21,7 +21,8 @@ angular.module('ionic.utils', [])
   var client;
   var self_user = '';
   var ProtoBuf = dcodeIO.ProtoBuf;
-  var Im = ProtoBuf.loadProtoFile("lib/protobuf/message.proto").build("Im");
+  var Im = ProtoBuf.loadProtoFile("lib/protobuf/message.proto").build("Im"), 
+      ImMessage = Im.Message;
   
   return {
     connect: function(server, imuser, imcred) {
@@ -34,7 +35,7 @@ angular.module('ionic.utils', [])
       } else {
         topic = "convs/p|"+self_user+"|"+self_user;
       }
-      var msg = new Im.Message(123, 'text', message);
+      var msg = new ImMessage(0, 'text', message);
       client.publish(topic, msg.toArrayBuffer());
       //client.publish(topic, message);
     },
@@ -42,8 +43,10 @@ angular.module('ionic.utils', [])
       client.publish("users/"+self_user+"/status", "online");
       client.subscribe("users/"+self_user+"/msgs");
       client.on("message", function(topic, message, packet) {
-         var msg = Im.Message.decode(message);
-         callback(topic, msg.content, msg.id);
+        alert(message);
+        var msg = ImMessage.decode(message);
+        alert(msg.content);
+        callback(topic, msg.content, msg.id);
       });
     },
     disconnect: function() {
