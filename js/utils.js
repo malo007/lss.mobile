@@ -36,16 +36,14 @@ angular.module('ionic.utils', [])
         topic = "convs/p|"+self_user+"|"+self_user;
       }
       var msg = new ImMessage(0, 'text', message);
-      client.publish(topic, msg.toArrayBuffer());
+      client.publish(topic, msg.encode64());
       //client.publish(topic, message);
     },
     recvmsg: function(callback) {
       client.publish("users/"+self_user+"/status", "online");
       client.subscribe("users/"+self_user+"/msgs");
       client.on("message", function(topic, message, packet) {
-        alert(message);
-        var msg = ImMessage.decode(message);
-        alert(msg.content);
+        var msg = ImMessage.decode64(message.toString());
         callback(topic, msg.content, msg.id);
       });
     },
