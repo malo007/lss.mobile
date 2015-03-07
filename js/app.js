@@ -127,8 +127,17 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
         }
       }
     })
+    .state('tab.contacts', {
+      url: '/contacts',
+      views: {
+        'tab-hidden': {
+          templateUrl: 'templates/tab-contacts.html',
+          controller: 'ContactsCtrl'
+        }
+      }
+    })
     .state('tab.chat', {
-      url: '/chat',
+      url: '/chat/:convId',
       views: {
         'tab-hidden': {
           templateUrl: 'templates/tab-chat.html',

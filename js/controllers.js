@@ -113,9 +113,29 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicNavBarDelegate, Settings, Im) {
+.controller('ContactsCtrl', function($scope, $rootScope, $ionicNavBarDelegate, $http) {
+  $scope.friends = [];
+  $http.get('http://localhost:8080/users/1/friends.json').
+    success(function(data) {
+      for (var index in data) {
+        $scope.friends.push({"id":data[index],"name":"user"+data[index]});
+      }
+    });
+  $rootScope.$emit('app.tabshide', '');
+  // on destroy
+  $scope.$on('$destroy', function() {
+    $rootScope.$emit('app.tabsshow', '');
+  });
+  // go back
+  $scope.goBack = function() {
+    $ionicNavBarDelegate.back();
+  };
+})
+
+.controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicNavBarDelegate, $stateParams, Settings, Im) {
   $scope.myUid = 153153;
   $scope.chatmsg = '';
+  $scope.friendname = $stateParams.convId;
   $scope.messages = [{'uid':0,'text':'Hello'}, {'uid':0,'text':', world!'}];
   Im.login(Settings.get('username'), 'fixsecret');
   Im.recvmsg(function(topic, message, messageId) {
@@ -141,4 +161,5 @@ angular.module('starter.controllers', [])
     $scope.chatmsg = '';
     $ionicScrollDelegate.scrollBottom(true);
   };
-});
+})
+;
