@@ -83,7 +83,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('SettingsCtrl', function($scope, $rootScope, $state, $ionicNavBarDelegate, Settings) {
+.controller('SettingsCtrl', function($scope, $rootScope, $state, $ionicHistory, Settings) {
   //console.log('SettingsCtrl enter');//
   var settins = Settings.getSettings();
   //var settins_list = [];
@@ -93,16 +93,21 @@ angular.module('starter.controllers', [])
   //}
   $scope.settings = settins;
   
-  $rootScope.$emit('app.tabshide', '');
-  // on destroy
-  $scope.$on('$destroy', function() {
+  // on $ionicView.enter
+  $scope.$on('$ionicView.enter', function() {
+    $rootScope.$emit('app.tabshide', '');
+    console.log('SettingsCtrl $ionicView.enter');//
+  });
+  // on $ionicView.leave
+  $scope.$on('$ionicView.leave', function() {
     Settings.save();
     $rootScope.$emit('app.tabsshow', '');
-    //console.log('SettingsCtrl exit');//
+    console.log('SettingsCtrl $ionicView.leave');//
   });
   // go back
   $scope.goBack = function() {
-    $ionicNavBarDelegate.back();
+    $rootScope.$emit('app.tabsshow', '');
+    $ionicHistory.goBack();
   };
   // do logout
   $scope.doLogout = function() {
@@ -113,7 +118,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ContactsCtrl', function($scope, $rootScope, $ionicNavBarDelegate, $http) {
+.controller('ContactsCtrl', function($scope, $rootScope, $ionicHistory, $http) {
   $scope.friends = [];
   $http.get('http://localhost:8080/users/1/friends.json').
     success(function(data) {
@@ -121,38 +126,55 @@ angular.module('starter.controllers', [])
         $scope.friends.push({"id":data[index],"name":"user"+data[index]});
       }
     });
-  $rootScope.$emit('app.tabshide', '');
-  // on destroy
-  $scope.$on('$destroy', function() {
+  // on $ionicView.beforeEnter
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $rootScope.$emit('app.tabshide', '');
+  });
+  // on $ionicView.beforeLeave
+  $scope.$on('$ionicView.beforeLeave', function() {
     $rootScope.$emit('app.tabsshow', '');
   });
   // go back
   $scope.goBack = function() {
-    $ionicNavBarDelegate.back();
+    $rootScope.$emit('app.tabsshow', '');
+    $ionicHistory.goBack();
   };
 })
 
-.controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicNavBarDelegate, $stateParams, Settings, Im) {
+.controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicHistory, $stateParams, Settings, Im) {
   $scope.myUid = 153153;
   $scope.chatmsg = '';
   $scope.friendname = $stateParams.convId;
   $scope.messages = [{'uid':0,'text':'Hello'}, {'uid':0,'text':', world!'}];
-  Im.login(Settings.get('username'), 'fixsecret');
-  Im.recvmsg(function(topic, message, messageId) {
-    $scope.messages.push({'uid':0, 'text':[topic, messageId, message].join(": ")});
-    $ionicScrollDelegate.scrollBottom(true);
+  
+  // on $ionicView.loaded
+  $scope.$on('$ionicView.loaded', function() {
+    console.log('ChatCtrl $ionicView.loaded');
+    Im.login(Settings.get('username'), 'fixsecret');
+    Im.recvmsg(function(topic, message, messageId) {
+      $scope.messages.push({'uid':0, 'text':[topic, messageId, message].join(": ")});
+      $ionicScrollDelegate.scrollBottom(true);
+    });
   });
-  $rootScope.$emit('app.tabshide', '');
-  //console.log('scope init');
-  // on destroy
-  $scope.$on('$destroy', function() {
-    //console.log('scope destroy');
+  // on $ionicView.unloaded
+  $scope.$on('$ionicView.unloaded', function() {
+    console.log('ChatCtrl $ionicView.unloaded');
     Im.logout();
+  });
+  // on $ionicView.beforeEnter
+  $scope.$on('$ionicView.beforeEnter', function() {
+    console.log('ChatCtrl $ionicView.beforeEnter');
+    $rootScope.$emit('app.tabshide', '');
+  });
+  // on $ionicView.beforeLeave
+  $scope.$on('$ionicView.beforeLeave', function() {
+    console.log('ChatCtrl $ionicView.beforeLeave');
     $rootScope.$emit('app.tabsshow', '');
   });
   // go back
   $scope.goBack = function() {
-    $ionicNavBarDelegate.back();
+    $rootScope.$emit('app.tabsshow', '');
+    $ionicHistory.goBack();
   };
   // send chat message
   $scope.sendChatMsg = function(chatmsg) {
