@@ -28,6 +28,15 @@ angular.module('ionic.utils', [])
     connect: function(server, imuser, imcred) {
       self_user = imuser;
       client = mqtt.connect(server, {auth:imuser+':'+imcred});
+      client.on('connect', function () {
+        console.log('$im successful connect');
+      });
+      client.on('close', function () {
+        console.log('$im successful close');
+      });
+      client.on('error', function () {
+        console.log('$im successful error');
+      });
     },
     sendusermsg: function(target_user, message) {
       if (self_user<target_user) {

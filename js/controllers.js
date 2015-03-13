@@ -68,18 +68,27 @@ angular.module('starter.controllers', [])
 })
 
 .controller('AccountCtrl', function($scope, Settings) {
+  $scope.userid = Settings.get('userid');
   $scope.username = Settings.get('username');
   $scope.type = typeof($scope.username);
 })
 
-.controller('LoginCtrl', function($scope, $state, Settings) {
+.controller('LoginCtrl', function($scope, $ionicHistory, $http, Settings) {
   $scope.loginData = {};
   // do login
   $scope.doLogin = function(loginData) {
-    Settings.set('username', loginData.username);
-    Settings.save();
-    // redirect
-    $state.go($state.current.data.from);
+    $http.get('http://61.131.37.30:8080/rest/userbyname/'+loginData.username)
+      .success(function(data, status) {
+        Settings.set('userid', data.id);
+        Settings.set('username', data.name);
+        Settings.save();
+        // redirect
+        //$state.go($state.current.data.from);
+        $ionicHistory.goBack();
+      })
+      .error(function(data, status, headers, config) {
+        alert('HTTP code(' + status + ') error: ' + (data || "Request failed"));
+      });
   };
 })
 
@@ -118,12 +127,16 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ContactsCtrl', function($scope, $rootScope, $ionicHistory, $http) {
+.controller('ContactsCtrl', function($scope, $rootScope, $ionicHistory, $http, Settings) {
   $scope.friends = [];
-  $http.get('http://61.131.37.30:8080/rest/users/1/friends.json').
+  $http.get('http://61.131.37.30:8080/rest/users/' + Settings.get('userid') + '/friends.json').
     success(function(data) {
       for (var index in data) {
-        $scope.friends.push({"id":data[index],"name":"user"+data[index]});
+        var friend_uid = data[index];
+        $http.get('http://61.131.37.30:8080/rest/users/' + friend_uid).
+          success(function(data) {
+            $scope.friends.push({"id":data.id, "name":data.name});
+          });
       }
     });
   // on $ionicView.beforeEnter
@@ -142,15 +155,15 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ChatCtrl', function($scope, $rootScope, $ionicScrollDelegate, $ionicHistory, $stateParams, Settings, Im) {
-  $scope.myUid = 153153;
+  $scope.myUid = Settings.get('userid');
   $scope.chatmsg = '';
-  $scope.friendname = $stateParams.convId;
-  $scope.messages = [{'uid':0,'text':'Hello'}, {'uid':0,'text':', world!'}];
+  $scope.friendUid = $stateParams.convId;
+  $scope.messages = [{'uid':0,'text':"Let's begin right here!"}];
   
   // on $ionicView.loaded
   $scope.$on('$ionicView.loaded', function() {
     console.log('ChatCtrl $ionicView.loaded');
-    Im.login(Settings.get('username'), 'fixsecret');
+    Im.login($scope.myUid, 'fixsecret');
     Im.recvmsg(function(topic, message, messageId) {
       $scope.messages.push({'uid':0, 'text':[topic, messageId, message].join(": ")});
       $ionicScrollDelegate.scrollBottom(true);
