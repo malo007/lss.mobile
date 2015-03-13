@@ -19,7 +19,9 @@ angular.module('starter', ['ionic', 'ngCordova', 'ionic.utils', 'starter.control
       StatusBar.styleDefault();
     }
     //splashscreen
-    navigator.splashscreen.hide();
+    if(navigator.splashscreen) {
+      navigator.splashscreen.hide();
+    }
   });
 })
 

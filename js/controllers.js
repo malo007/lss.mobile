@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
 
 .controller('ContactsCtrl', function($scope, $rootScope, $ionicHistory, $http) {
   $scope.friends = [];
-  $http.get('http://61.131.37.30:8080/users/1/friends.json').
+  $http.get('http://61.131.37.30:8080/rest/users/1/friends.json').
     success(function(data) {
       for (var index in data) {
         $scope.friends.push({"id":data[index],"name":"user"+data[index]});
